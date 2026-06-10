@@ -66,7 +66,10 @@ def get_api_base(
     if dynamic_api_base is not None:
         return dynamic_api_base
 
-    stream: bool = getattr(optional_params, "stream", False)
+    if isinstance(optional_params, dict):
+        stream: bool = optional_params.get("stream", False) or False
+    else:
+        stream = getattr(optional_params, "stream", False)
 
     if (
         _optional_params.vertex_location is not None
